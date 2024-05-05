@@ -1,0 +1,32 @@
+---
+- name: Setup Ligolo-ng
+  hosts: all
+  become: yes  # Use sudo for the tasks
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name: 
+          - tar
+          - wget
+        state: present
+
+    - name: Download Ligolo-ng tarball
+      get_url:
+        url: "https://github.com/nicocha30/ligolo-ng/releases/download/v0.5.2/ligolo-ng_proxy_0.5.2_linux_amd64.tar.gz"
+        dest: "/tmp/ligolo-ng.tar.gz"
+        mode: '0644'
+
+    - name: Extract Ligolo-ng tarball
+      ansible.builtin.unarchive:
+        src: "/tmp/ligolo-ng.tar.gz"
+        dest: "/opt/ligolo-ng"
+        remote_src: yes
+        extra_opts: ["--strip-components=1"]
+        creates: "/opt/ligolo-ng/ligolo-ng_proxy"  # This will skip extraction if the file already exists
+
+    - name: Set executable permissions for Ligolo-ng
+      file:
+        path: "/opt/ligolo-ng/ligolo-ng_proxy"
+        mode: '0755'
+        state: file

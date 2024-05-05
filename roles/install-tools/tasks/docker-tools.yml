@@ -53,3 +53,10 @@
     state: present
   register: output
   become: true
+  
+  
+- name: Run remnux/ciphey Docker container
+  tasks:
+    - name: Execute Docker command using shell
+      shell: docker run -it --rm remnux/ciphey
+      
