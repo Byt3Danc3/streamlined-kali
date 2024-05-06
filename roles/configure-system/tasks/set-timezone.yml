@@ -1,6 +1,6 @@
 ---
 - name: Set Timezone
   timezone:
-    name: "America/North_Dakota/Center"
+    name: "Australia/Adelaide"
   become: true
   become_method: sudo

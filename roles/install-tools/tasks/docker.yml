@@ -15,18 +15,31 @@
 - name: Add Docker GPG key
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/debian/gpg
-    dest: /etc/apt/keyrings/docker.asc
+    dest: /etc/apt/keyrings/docker.gpg
     mode: '644'
   become: true
   become_method: sudo
 
 - name: Add Docker repository
   ansible.builtin.apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable
+    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable
     state: present
   become: true
   become_method: sudo
 
+- name: Import GPG Key
+  tasks:
+    - name: Execute Docker command using shell
+      shell: curl -fsSL https://download.docker.com/linux/debian/gpg |
+  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+- name: Apt Update
+  tasks:
+    - name: Update
+      shell: apt update
+  become: true
+  become_method: sudo
+  
 - name: Install Docker
   become: true
   become_method: sudo
