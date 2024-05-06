@@ -34,6 +34,7 @@ apt_packages:
   - libkrb5-dev
   - btop
   - cargo
+  - neofetch
 
 pipx_packages:
     - { name: 'impacket', source: 'git+https://github.com/fortra/impacket.git' }

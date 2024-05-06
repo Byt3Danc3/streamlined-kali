@@ -1,7 +1,8 @@
 ---
-- name: Clone and build TireFire 
-  become: yes  
-  tasks:
+- name: Clone and build TireFire
+  become: true
+  become_method: sudo
+  block:
     - name: Clone TireFire repository
       git:
         repo: 'https://github.com/CoolHandSquid/TireFire.git'
@@ -13,14 +14,13 @@
       command: ./Build.sh
       args:
         chdir: '/opt/TireFire'
-        
-        
-- name: Clone and build Ares 
-  become: yes  
-  tasks:
+
+- name: Clone and build Ares
+  become: true
+  block:
     - name: Clone Ares repository
       git:
-        repo: 'https://github.com/bee-san/Ares/Ares.git'
+        repo: 'https://github.com/bee-san/Ares.git'
         dest: '/opt/Ares'
         clone: yes
         update: yes
@@ -29,3 +29,4 @@
       command: docker build .
       args:
         chdir: '/opt/Ares'
+
