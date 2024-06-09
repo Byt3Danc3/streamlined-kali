@@ -31,7 +31,14 @@ line_break "Installing ansible-galaxy roles"
 ansible-galaxy install -r requirements.yml
 line_break "Roles Installed"
 
+line_break "Enabling ssh service"
+sudo systemctl enable --now ssh.service
+
 sudo whoami > /dev/null
+
+line_break "Fixing Docker CE Install (Ainsible is broken)"
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
 
 line_break "Running playbook"
 ansible-playbook main.yml
