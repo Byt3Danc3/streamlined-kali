@@ -49,7 +49,7 @@ alias d="docker"
 alias dc="docker compose"
 
 #General
-alias update='sudo apt update && sudo apt upgrade'
+alias update='sudo apt update && sudo apt upgrade && sudo pipx upgrade-all'
 alias bat='batcat'
 alias g="git"
 alias c="clear"
