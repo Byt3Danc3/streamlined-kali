@@ -46,7 +46,7 @@ Principles:
 # Instructions
 
 ## Quick deployment 
-* Start with Kali
+* Create new Kali VM using official Virtual Machine image
 * git clone https://github.com/Byt3Danc3/ultimate-kali.git
 * cd ultimate-kali
 * chmod +x setup.sh
