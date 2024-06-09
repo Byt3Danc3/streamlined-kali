@@ -53,7 +53,8 @@ sudo systemctl enable --now docker.service
 
 line_break "Installing portainer (Accessible via 9000)"
 sudo docker volume create portainer_data
-sudo docker run -d -p 127.0.0.1:8000:8000 -p 127.0.0.1:9000:9000 --name portainer -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=$ENC_PASSWORD --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+#ENC_PASSWORD refuses to get set unless docker-compose is used (delimiting with \ or $ failed to work)... quick to set password and is localhost only  
+sudo docker run -d --name portainer -p 127.0.0.1:8000:8000 -p 127.0.0.1:9000:9000 --name portainer -e admin-password=$ENC_PASSWORD -e ADMIN_PASSWORD=$ENC_PASSWORD --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
 line_break "Running playbook"
 ansible-playbook main.yml
