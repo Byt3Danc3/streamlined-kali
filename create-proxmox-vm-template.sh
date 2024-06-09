@@ -81,7 +81,7 @@ virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --hostname
 # Install the QEMU agent, enable SSH, configure DHCP and SLAAC, and run the setup script
 virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --install qemu-guest-agent
 virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'systemctl enable ssh.service'
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'echo -e "auto eth0\niface eth0 inet dhcp\niface eth0 inet6 auto" >> /etc/network/interfaces'"
+virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'echo -e "auto eth0\niface eth0 inet dhcp\niface eth0 inet6 auto" >> /etc/network/interfaces'
 #virt-customize -v -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'dhclient eth0 && ip a'
 
 
