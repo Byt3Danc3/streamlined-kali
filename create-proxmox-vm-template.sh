@@ -3,7 +3,7 @@
 # User Variables
 
 KALI_META_PACKAGE="kali-linux-large"
-VMHOSTNAME=Streamlined-Kali
+VMHOSTNAME="Streamlined-Kali"
 KALIVERSION="2024.2" 
 PUBKEYFILE="pubkey"
 
@@ -121,4 +121,4 @@ done
 
 echo "Using NEXTVMID: $NEXTVMID"
 
-qm clone $VMID $NEXTVMID --name $HOSTNAME-$NEXTVMID
+qm clone $VMID $NEXTVMID --name $VMHOSTNAME-$NEXTVMID
