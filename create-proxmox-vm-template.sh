@@ -65,7 +65,7 @@ done
 echo "Using VMID: $VMID"
 
 qm create $VMID \
-    --name KaliLinux-$KALIVERSION \
+    --name $VMHOSTNAME \
     --agent 1 \
     --memory 4096 \
     --bios seabios \
