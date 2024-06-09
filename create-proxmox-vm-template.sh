@@ -5,7 +5,7 @@
 KALI_META_PACKAGE="kali-linux-large"
 VMHOSTNAME=Streamlined-Kali
 KALIVERSION="2024.2" 
-PUBKEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdpwj9XWVHolYSZIHi/l8apuw7pRf537nRHs6NhS5UtootzpLYGqR6iMFLanoYiUpTjFYFD+OHceAwC434Hwu4jNizHIhkeYq7Owltzil5Bd/hgipiLPhahLXRhx+STBYwiLgL+a1H6DpX7ZwVsC8iB2aOvbYswphEBw2h47pArx7d4lqxIZptzLVFqZlyuTaQ+cep/LkQe9hUgZZH9MBxOyMO5xuW71ST4IoRpewe10uGvnpnTH8NL2jHiX/44UkF2q3WDZ5B37lFYT/BO82sC4QVIv4HI1tnwXY7PehyjubbPkHMD7BFx6fBqVBOzc5iTLlWifbXLUIC6vBf+Pxp rsa-key-sweets-20221102" 
+PUBKEYFILE="pubkey"
 
 # Optional variables
 
@@ -100,8 +100,7 @@ qm set $VMID --vga std
 
 # Setting Cloud-init parameters
 qm set $VMID --ciuser kali --cipassword "kalihax0r"
-echo "$PUBKEY" > /tmp/sshkey.pub
-qm set $VMID --sshkey /tmp/sshkey.pub
+qm set $VMID --sshkey $PUBKEYFILE
 qm set $VMID --ipconfig0 ip=dhcp,ip6=auto #ipv6 configured for slaac
 
 # Select size of Kali Install

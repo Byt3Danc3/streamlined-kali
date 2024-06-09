@@ -45,7 +45,7 @@ Principles:
 
 # Instructions
 
-## Quick deployment 
+## Quick deployment (single instance/VM)
 * Create new Kali VM using official Virtual Machine image
 * git clone https://github.com/Byt3Danc3/streamlined-kali.git
 * cd streamlined-kali
@@ -58,3 +58,12 @@ Principles:
 * ansible-galaxy install -r requirements.yml
 * Make sure we have a sudo token (sudo whoami)
 * ansible-playbook main.yml
+
+# Instructions for Proxmox Template Creation 'wizard'
+* The following one liner will create a new VM in Proxmox by pulling down the latest Kali VM,
+* leverages Cloud-Init to create a Kali image, with username kali:kalihax0r (by default), and then 
+* adds integrates the above automation scripts within the image. 
+* Finally, it creates a template from the created Kali image and creates a working clone of the template. 
+``` 
+wget https://raw.githubusercontent.com/Byt3Danc3/streamlined-kali/master/create-proxmox-vm-template.sh && chmod +x create-proxmox-vm-template.sh && sudo ./create-proxmox-vm-template.sh 
+```
