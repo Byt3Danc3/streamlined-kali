@@ -35,8 +35,23 @@ apt_packages:
   - btop
   - cargo
   - neofetch
+<<<<<<< Updated upstream
   - krb5-user
 
+=======
+  - npm
+  - nodejs
+  - chromium
+  - rbenv 
+  - ruby-build 
+  - libffi8 
+  - libxml2 
+  - libxml2-utils 
+  - libxslt1.1 
+  - libyaml-0-2 
+  - xsltproc
+  
+>>>>>>> Stashed changes
 pipx_packages:
     - { name: 'impacket', source: 'git+https://github.com/fortra/impacket.git' }
     - { name: 'netexec', source: 'git+https://github.com/Pennyw0rth/NetExec' }
@@ -73,3 +88,4 @@ gem_packages:
   - rubyntlm
   - winrm-fs
   - evil-winrm
+  - aquatone 
