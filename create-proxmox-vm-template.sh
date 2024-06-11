@@ -91,11 +91,11 @@ qm importdisk $VMID "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" local-zf
 
 # Attach the disk and configure the VM
 qm set $VMID --scsi0 local-zfs:vm-$VMID-disk-0
-qm set $VMID --scsi0 local-zfs:cloudinit
+qm set $VMID --ide0 local-zfs:cloudinit
 
 # Define boot order and console access
 qm set $VMID --boot c --bootdisk scsi0
-qm set $VMID --serial0 socket --vga serial0
+#qm set $VMID --serial0 socket --vga serial0
 qm set $VMID --vga std
 
 # Setting Cloud-init parameters
