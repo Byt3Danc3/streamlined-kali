@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # User Variables
-
-KALI_META_PACKAGE="kali-linux-large"
-VMHOSTNAME="Streamlined-Kali"
+VMHOSTNAME="Kali"
 KALIVERSION="2024.2" 
+KALI_META_PACKAGE="kali-linux-large"
+KALI_PASS="kalihax0r"
 PUBKEYFILE="pubkey"
-
+VERBOSITY="-v"
 # Optional variables
 
 # Use Proxmox Template ISO path 
@@ -65,7 +65,7 @@ done
 echo "Using VMID: $VMID"
 
 qm create $VMID \
-    --name $VMHOSTNAME \
+    --name Template-$VMHOSTNAME \
     --agent 1 \
     --memory 4096 \
     --bios seabios \
@@ -75,13 +75,20 @@ qm create $VMID \
     --scsihw virtio-scsi-single
 
 # Modify the image for Cloud-init support
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --install cloud-init
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --hostname $VMHOSTNAME
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --install cloud-init
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --hostname $VMHOSTNAME
+
+# Enable RDP
+apt-get --yes --force-yes install kali-desktop-xfce xorg xrdp
+echo "Configuring xrdp to listen to port 3390 per guide"
+sed -i 's/port=3389/port=3390/g' /etc/xrdp/xrdp.ini
+sudo systemctl enable xrdp --now
+
 
 # Install the QEMU agent, enable SSH, configure DHCP and SLAAC, and run the setup script
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --install qemu-guest-agent
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'systemctl enable ssh.service'
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'echo -e "auto eth0\niface eth0 inet dhcp\niface eth0 inet6 auto" >> /etc/network/interfaces'
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --install qemu-guest-agent
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'systemctl enable ssh.service'
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'echo -e "auto eth0\niface eth0 inet dhcp\niface eth0 inet6 auto" >> /etc/network/interfaces'
 #virt-customize -v -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'dhclient eth0 && ip a'
 
 
@@ -99,16 +106,16 @@ qm set $VMID --boot c --bootdisk scsi0
 qm set $VMID --vga std
 
 # Setting Cloud-init parameters
-qm set $VMID --ciuser kali --cipassword "kalihax0r"
+qm set $VMID --ciuser kali --cipassword "$KALI_PASS"
 qm set $VMID --sshkey $PUBKEYFILE
 qm set $VMID --ipconfig0 ip=dhcp,ip6=auto #ipv6 configured for slaac
 
 # Select size of Kali Install
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'sudo apt install -y kali-linux-large'
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'sudo apt install -y kali-linux-large'
 
 # Main playbook/customisations
 
-virt-customize -a "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'git clone https://github.com/Byt3Danc3/streamlined-kali.git && cd streamlined-kali && chmod +x setup.sh && ./setup.sh'
+virt-customize -a $VERBOSITY "$ISOPATH/kali-linux-$KALIVERSION-qemu-amd64.qcow2" --run-command 'git clone https://github.com/Byt3Danc3/streamlined-kali.git && cd streamlined-kali && chmod +x setup.sh && ./setup.sh'
 
 # Convert VM to template if needed
 qm template $VMID
